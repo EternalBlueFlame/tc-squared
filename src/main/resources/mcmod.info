@@ -1,0 +1,15 @@
+[
+{
+  "modid": "timsquared",
+  "name": "TiM^2",
+  "description": "A Traincraft-5 add-on that adds blocky trains and stock.",
+  "version": "1.7.10.1558-1614",
+  "url": "https://gitlab.com/EternalBlueFlame/tim-squared",
+  "updateUrl": "https://gitlab.com/EternalBlueFlame/tim-squared/releases",
+  "authorList": ["Eternal Blue Flame"],
+  "credits": "Eternal Blue Flame | Lunar Tales",
+  "logoFile": "/assets/tim/textures/items/TiM.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
