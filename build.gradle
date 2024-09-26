@@ -1,3 +1,9 @@
+//change this for a different TC5 git
+def gitTC = 'https://github.com/EternalBlueFlame/Traincraft-5.git'
+def branch = 'TC4.5-1.7.10'
+
+def cloneDir = "${buildDir}/libs/TC/"
+import org.apache.tools.ant.taskdefs.condition.Os
 buildscript {
     repositories {
 
@@ -18,15 +24,9 @@ buildscript {
         classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
             changing = true
         }
-        classpath 'de.undercouch:gradle-download-task:3.4.3'
     }
 }
 
-plugins {
-    id "de.undercouch.download" version "4.1.2"
-}
-
-apply plugin: 'de.undercouch.download'
 apply plugin: 'forge'
 apply plugin: 'idea'
 
@@ -42,30 +42,63 @@ minecraft {
 	runDir = "run"
 }
 
-task (downloadZipFile, type: Download) {
-    src 'https://nightly.link/EternalBlueFlame/Traincraft-5/workflows/gradle/TC4.5-1.7.10/TC4-5-Experimental.zip'
-    dest new File("build/tmp/Traincraft5.zip", 'Traincraft-5-Experimental.zip')
-    onlyIfModified true
+// Task to run the Gradle build in the cloned repo
+task buildClonedRepo(type: Exec) {
+    //first, download or update the repo
+    doFirst {
+        if (!file(cloneDir).exists()) {
+            mkdir(cloneDir)
+            commandLine 'git', 'clone', '--branch', branch, gitTC, cloneDir
+            workingDir cloneDir
+        } else {
+            workingDir cloneDir
+            commandLine 'git', 'pull'
+        }
+    }
+    //next, add the dependence source directory, and add execute perms for linux/mac
+    sourceSets.main.java.srcDirs += file("${cloneDir}/src/main/java")
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        commandLine 'chmod', 'a+rwx', './gradlew'
+    }
+    //last, compile the dependency
+    doLast {
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine 'cmd', '/c', 'gradlew.bat', 'build'
+        }
+        else {
+            commandLine './gradlew', 'setupDecompWorkspace --refresh-dependencies idea'
+        }
+    }
 }
 
-task (downloadTraincraft, type: Copy) {
-    from zipTree(downloadZipFile.dest)
-    into "libs"
-    dependsOn downloadZipFile
+repositories {
+    maven {
+        name "ChickenBones"
+        url "http://chickenbones.net/maven/"
+    }
+    maven { 
+        url = "http://maven.cil.li/"
+    }
 }
-
-repositories {}
 
 dependencies {
-    implementation "train:Traincraft-4.5"
+    repositories {
+        ivy {
+            name "BuildCraft"
+            artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision](-[classifier]).[ext]"
+        }
+    }
 
-	//this imports jar files from the "libs" folder, including TC5
-	compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
+    compile name: "buildcraft", version: "7.1.16", classifier: "dev"
+    compile "codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev"
+    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev"
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev"
+}
 
-	// for more info...
-	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-	// http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+afterEvaluate {
+    tasks["idea"].dependsOn.add(buildClonedRepo);
+    tasks["build"].dependsOn.add(buildClonedRepo);
 }
 
 processResources {
@@ -85,9 +118,4 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-}
-
-afterEvaluate {
-    tasks["idea"].dependsOn.add(downloadTraincraft);
-    tasks["build"].dependsOn.add(downloadTraincraft);
 }

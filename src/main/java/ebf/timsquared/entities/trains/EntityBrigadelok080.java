@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import train.common.api.Locomotive;
 import train.common.api.SteamTrain;
+import train.common.api.TrainSound;
 import train.common.items.ItemRollingStock;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class EntityBrigadelok080 extends SteamTrain {
      * To make your own custom train or rollingstock, create a new class that is a copy of the train or rollingstockShapeBox that is closest to what you are adding,
      *     in that copy, you will need to go through the variables and overrides and change them to match the class/transport.
      * lastly you have to register the class in
-     * @see TiMGenericRegistry#listTrains(int)
+     * @see TraincraftRegistry#registerTransports(String, List<AbstractTrains>)
      *
      * The fluid tank has 2 values, one for water/RF/fuel/uranium and another for steam, the second one is ONLY used with steam and nuclear steam trains.
      *     The first part is how much fluid it can store, a bucket is worth 1000.
@@ -54,11 +55,8 @@ public class EntityBrigadelok080 extends SteamTrain {
     /**
      * these basic constructors only need to have their names changed to that of this class, that is assuming your editor doesn't automatically do that.
      * Be sure the one that takes more than a world is always first, unless you wanna compensate for that in the item declaration.
-     * @see EntityTrainCore
+     * @see Locomotive
      */
-    public EntityBrigadelok080(World world, double xPos, double yPos, double zPos) {
-        super(world, xPos, yPos, zPos);
-    }
     public EntityBrigadelok080(World world){
         super(world);
     }
@@ -121,31 +119,6 @@ public class EntityBrigadelok080 extends SteamTrain {
     @Override
     public int getInventoryRows(){return 1;}
     /**
-     * <h2>Type</h2>
-     * @return the type which will define it's features, GUI, a degree of storage (like crafting slots), and a number of other things.
-     */
-    @Override
-    public List<TrainsInMotion.transportTypes> getTypes(){return TrainsInMotion.transportTypes.STEAM.singleton();}
-    /**
-     * <h2>Max Fuel</h2>
-     * @return the maxstorage of fuel the train can store.
-     * @see GenericRailTransport#getMaxFuel() for more info.
-     * @see FuelHandler for information on fuel consumption.
-     */
-    @Override
-    public float getMaxFuel(){return 1;}
-
-    @Override
-    public ItemStackSlot fuelSlot(){
-        return new ItemStackSlot(this, 400,114,32).setOverlay(Items.coal);
-    }
-
-    @Override
-    public ItemStackSlot waterSlot(){
-        return new ItemStackSlot(this, 401,150,32).setOverlay(Items.water_bucket);
-    }
-
-    /**
      * <h2>Rider offset</h2>
      * @return defines the offsets of the riders in blocks, the first value is how far back, and the second is how high.
      *     Negative values are towards the front, ground, or right. In that order.
@@ -199,24 +172,10 @@ public class EntityBrigadelok080 extends SteamTrain {
     }
 
     @Override
-    public float[][] bogieModelOffsets() {
-        return null;
-    }
-
-    @Override
-    public ModelBase[] bogieModels() {
-        return null;
-    }
-
-    @Override
     public float[] rotationPoints() {
         return new float[]{0.5f, -1.5f};
     }
 
-    @Override
-    public float getRenderScale() {
-        return  0.0625f;
-    }
 
     @Override
     public float[][] modelOffsets() {
@@ -246,39 +205,6 @@ public class EntityBrigadelok080 extends SteamTrain {
     @Override
     public int[] getTankCapacity(){return new int[]{9161, 800};}
 
-
-    /**
-     * <h2>fluid filter</h2>
-     * defines what fluids can and can't be stored in the tank.
-     * for instance if you have a wooden tanker car, you can deny fluids that are fire sources (like lava).
-     */
-    @Override
-    public String[][] getTankFilters(){
-        return FuelHandler.DefaultTanks.STEAM.value();
-    }
-
-    //todo: maybe make some util functions or something to simplify this stuff?
-    //seems kinda complicated for something that should be the difficulty of a config file.
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack){
-        if (slot == 400) {
-            return TileEntityFurnace.getItemBurnTime(stack) > 0;
-        } else if (slot ==401) {
-            return FuelHandler.getUseableFluid(stack, this) != null;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * <h2>fuel management</h2>
-     * defines how the transport manages burnHeat, both in consuming items, and in managing the burnHeat.
-     */
-    @Override
-    public void manageFuel(){
-        fuelHandler.manageSteam(this);
-    }
-
     /**
      * <h2>pre-assigned values</h2>
      * These return values are defined from the top of the class.
@@ -296,8 +222,8 @@ public class EntityBrigadelok080 extends SteamTrain {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public ResourceLocation getHorn(){return URIRegistry.SOUND_HORN.getResource("h080brigadelok.ogg");}
+    public TrainSound getHorn(){return new TrainSound("tcsquared:h080brigadelok",1,1,0);}
     @SideOnly(Side.CLIENT)
     @Override
-    public ResourceLocation getRunningSound(){return URIRegistry.SOUND_RUNNING.getResource("r080brigadelok.ogg");}
+    public TrainSound getRunningSound(){return new TrainSound("tcsquared:r080brigadelok",1,1,0);}
 }

@@ -1,10 +1,6 @@
 package ebf.timsquared.entities.rollingstock;
 
-import ebf.tim.TrainsInMotion;
-import ebf.tim.api.RollingstockBase;
 import ebf.tim.api.SkinRegistry;
-import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.ItemTransport;
 import ebf.timsquared.TiMSquared;
 import ebf.timsquared.entities.trains.EntityBrigadelok080;
 import ebf.timsquared.models.rollingstock.PullmansPalace;
@@ -15,9 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import train.common.api.EntityRollingStock;
 import train.common.api.IPassenger;
-import train.common.entity.rollingStock.PassengerIC4_DSB_FH;
+import train.common.items.ItemRollingStock;
 
-import java.util.List;
 import java.util.UUID;
 
 import static ebf.tim.utility.CommonUtil.DefineStack;
@@ -32,11 +27,8 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
     /*private static final String[] itemDescription = new String[]{
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 2 " + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.seats") +": 4 " + StatCollector.translateToLocal("menu.item.players")};*/
-    public static final Item thisItem = new ItemTransport(new EntityPullmansPalace(null), TiMSquared.MODID, TiMSquared.creativeTab);
+    public static final Item thisItem = new ItemRollingStock(new EntityPullmansPalace(null), TiMSquared.MODID, TiMSquared.creativeTab);
 
-    public EntityPullmansPalace(UUID owner, World world, double xPos, double yPos, double zPos) {
-        super(owner, world, xPos, yPos, zPos);
-    }
     public EntityPullmansPalace(World world){
         super(world);
     }
@@ -44,27 +36,11 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
     /**
      * <h1>Variable Overrides</h1>
      */
-
-    @Override
-    public float[][] bogieModelOffsets() {
-        return null;
-    }
-
-    @Override
-    public ModelBase[] bogieModels() {
-        return null;
-    }
-
     /**
      * <h2>Bogie Offset</h2>
      */
     @Override
     public float[] rotationPoints(){return new float[]{2,-2};}
-
-    @Override
-    public float getRenderScale() {
-        return 0.0625f;
-    }
 
     @Override
     public float[][] modelOffsets() {
@@ -73,7 +49,7 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
 
     @Override
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/pullmanspalace.png",
+        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/pullmanspalace.png", new String[]{},
                 "Pullman's Palace", "A fictional passenger car from \"Railroads!\", based off the Federal #98 Pullman Private Car");
     }
 
@@ -85,16 +61,6 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
     @Override
     public int[] getTankCapacity() {
         return null;
-    }
-
-    @Override
-    public String[][] getTankFilters() {
-        return null;
-    }
-
-    @Override
-    public void manageFuel() {
-
     }
 
     @Override
@@ -154,11 +120,6 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
     @Override
     public String[] additionalItemText() {
         return null;
-    }
-
-    @Override
-    public float getMaxFuel() {
-        return 0;
     }
 
     /**

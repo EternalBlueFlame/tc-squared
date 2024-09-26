@@ -8,13 +8,15 @@ import ebf.timsquared.entities.trains.EntityBrigadelok080Diesel;
 import ebf.timsquared.entities.trains.EntityBrigadelok080Electric;
 import train.common.api.AbstractTrains;
 import train.common.core.CreativeTabTraincraft;
+import train.common.items.ItemRollingStock;
+import train.common.library.TraincraftRegistry;
 
 @Mod(modid = TiMSquared.MODID, version = TiMSquared.MOD_VERSION, name = "TiM^2")
 public class TiMSquared {
-    public static final String MODID = "timsquared";
-    public static final String MOD_VERSION = "0.01_pre-alpha";
+    public static final String MODID = "tcsquared";
+    public static final String MOD_VERSION = "0.1_beta";
 
-    private static ItemTransport tabItem;
+    private static ItemRollingStock tabItem;
 
     public static CreativeTabTraincraft creativeTab;
 
@@ -26,14 +28,14 @@ public class TiMSquared {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
 
-        creativeTab = new CreativeTabTraincraft("timsquared", tabItem);
+        creativeTab = new CreativeTabTraincraft("tcsquared", tabItem);
 
-        TiMGenericRegistry.registerTransports(MODID, listSteamTrains(), null);
-        TiMGenericRegistry.registerTransports(MODID, listFreight(), null);
-        TiMGenericRegistry.registerTransports(MODID, listPassenger(), null);
-        TiMGenericRegistry.registerTransports(MODID, listTanker(), null);
-        creativeTab.tabItem = tabItem= (ItemTransport) TiMGenericRegistry.RegisterItem(
-                new ItemTransport(new EntityBrigadelok080(null),MODID,null)
+        TraincraftRegistry.registerTransports(MODID, listSteamTrains());
+        TraincraftRegistry.registerTransports(MODID, listFreight());
+        TraincraftRegistry.registerTransports(MODID, listPassenger());
+        TraincraftRegistry.registerTransports(MODID, listTanker());
+        creativeTab.tabItem = tabItem= (ItemRollingStock) TraincraftRegistry.RegisterItem(
+                new ItemRollingStock(new EntityBrigadelok080(null),MODID,null)
                 ,MODID, "tab.timsquared.name",null,null,null,null);
 
     }

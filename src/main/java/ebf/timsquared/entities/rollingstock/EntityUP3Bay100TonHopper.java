@@ -1,10 +1,6 @@
 package ebf.timsquared.entities.rollingstock;
 
-import ebf.tim.TrainsInMotion;
-import ebf.tim.api.RollingstockBase;
 import ebf.tim.api.SkinRegistry;
-import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.ItemTransport;
 import ebf.timsquared.TiMSquared;
 import ebf.timsquared.entities.trains.EntityBrigadelok080;
 import ebf.timsquared.models.bogies.CMDBogie;
@@ -14,10 +10,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import train.client.render.Bogie;
 import train.common.api.Freight;
+import train.common.items.ItemRollingStock;
 
-import java.util.List;
-import java.util.UUID;
 
 import static ebf.tim.utility.CommonUtil.DefineStack;
 
@@ -33,11 +29,8 @@ public class EntityUP3Bay100TonHopper extends Freight {
     /*public static final String[] itemDescription = new String[]{
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 2" + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.sizeof") +": 27" + StatCollector.translateToLocal("menu.item.slots")};*/
-    public static final Item thisItem = new ItemTransport(new EntityUP3Bay100TonHopper(null), TiMSquared.MODID, TiMSquared.creativeTab);
+    public static final Item thisItem = new ItemRollingStock(new EntityUP3Bay100TonHopper(null), TiMSquared.MODID, TiMSquared.creativeTab);
 
-    public EntityUP3Bay100TonHopper(UUID owner, World world, double xPos, double yPos, double zPos) {
-        super(owner, world, xPos, yPos, zPos);
-    }
     public EntityUP3Bay100TonHopper(World world){
         super(world);
     }
@@ -48,23 +41,19 @@ public class EntityUP3Bay100TonHopper extends Freight {
 
     /**
      * <h2>Bogie Offset</h2>
-     */
-    @Override
-    public float[][] bogieModelOffsets() {
-        return new float[][]{{1,0,0},{-1,0,0}};
-    }
-
-    @Override
-    public ModelBase[] bogieModels() {
-        return new ModelBase[]{new CMDBogie()};
+     */    @Override
+    public Bogie[] bogies(){
+        return new Bogie[]{
+                new Bogie(new CMDBogie(),1f,0,0),
+                new Bogie(new CMDBogie(),-1f,0,0)};
     }
 
     @Override
     public float[] rotationPoints(){return new float[]{1,-1};}
 
     @Override
-    public float getRenderScale() {
-        return 0.0625f;
+    public float[][] getRenderScale() {
+        return new float[][]{{0.0625f,0.0625f,0.0625f}};
     }
 
     @Override
@@ -87,17 +76,6 @@ public class EntityUP3Bay100TonHopper extends Freight {
     @Override
     public int[] getTankCapacity() {
         return null;
-    }
-
-    @Override
-    public String[][] getTankFilters() {
-        return null;
-    }
-
-
-    @Override
-    public void manageFuel() {
-
     }
 
     @Override
@@ -159,21 +137,11 @@ public class EntityUP3Bay100TonHopper extends Freight {
         return null;
     }
 
-    @Override
-    public float getMaxFuel() {
-        return 0;
-    }
-
     /**
      * <h2>Inventory Size</h2>
      */
     @Override
     public int getInventoryRows(){return 3;}
-    /**
-     * <h2>Type</h2>
-     */
-    @Override
-    public List<TrainsInMotion.transportTypes> getTypes(){return TrainsInMotion.transportTypes.HOPPER.singleton();}
     /**
      * <h2>Rider offsets</h2>
      */
@@ -183,11 +151,6 @@ public class EntityUP3Bay100TonHopper extends Freight {
     @Override
     public float[] getHitboxSize() {
         return new float[]{4,1.5f, 1.2f};
-    }
-
-    @Override
-    public float getPistonOffset() {
-        return 0;
     }
 
 

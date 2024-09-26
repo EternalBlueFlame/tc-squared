@@ -1,10 +1,6 @@
 package ebf.timsquared.entities.rollingstock;
 
-import ebf.tim.TrainsInMotion;
-import ebf.tim.api.RollingstockBase;
 import ebf.tim.api.SkinRegistry;
-import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.ItemTransport;
 import ebf.timsquared.TiMSquared;
 import ebf.timsquared.entities.trains.EntityBrigadelok080;
 import ebf.timsquared.models.bogies.CMDBogie;
@@ -14,8 +10,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import train.client.render.Bogie;
 import train.common.api.Freight;
-import train.common.entity.rollingStock.EntityFreight7Plank;
+import train.common.items.ItemRollingStock;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,11 +31,8 @@ public class EntityBNSFHopper extends Freight {
     /*public static final String[] itemDescription = new String[]{
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 2" + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.sizeof") +": 27" + StatCollector.translateToLocal("menu.item.slots")};*/
-    public static final Item thisItem = new ItemTransport(new EntityBNSFHopper(null), TiMSquared.MODID, TiMSquared.creativeTab);
+    public static final Item thisItem = new ItemRollingStock(new EntityBNSFHopper(null), TiMSquared.MODID, TiMSquared.creativeTab);
 
-    public EntityBNSFHopper(UUID owner, World world, double xPos, double yPos, double zPos) {
-        super(owner, world, xPos, yPos, zPos);
-    }
     public EntityBNSFHopper(World world){
         super(world);
     }
@@ -51,22 +45,14 @@ public class EntityBNSFHopper extends Freight {
      * <h2>Bogie Offset</h2>
      */
     @Override
-    public float[][] bogieModelOffsets() {
-        return new float[][]{{2.4375f,0,0},{-2.4375f,0,0}};
-    }
-
-    @Override
-    public ModelBase[] bogieModels() {
-        return new ModelBase[]{new CMDBogie()};
+    public Bogie[] bogies(){
+        return new Bogie[]{
+                new Bogie(new CMDBogie(),2.4375f,0,0),
+                new Bogie(new CMDBogie(),-2.4375f,0,0)};
     }
 
     @Override
     public float[] rotationPoints(){return new float[]{2.4375f,-2.4375f};}
-
-    @Override
-    public float getRenderScale() {
-        return 0.0625f;
-    }
 
     @Override
     public float[][] modelOffsets() {
@@ -90,16 +76,6 @@ public class EntityBNSFHopper extends Freight {
         return null;
     }
 
-    @Override
-    public String[][] getTankFilters() {
-        return null;
-    }
-
-
-    @Override
-    public void manageFuel() {
-
-    }
 
     @Override
     public float weightKg() {
@@ -160,21 +136,11 @@ public class EntityBNSFHopper extends Freight {
         return null;
     }
 
-    @Override
-    public float getMaxFuel() {
-        return 0;
-    }
-
     /**
      * <h2>Inventory Size</h2>
      */
     @Override
     public int getInventoryRows(){return 3;}
-    /**
-     * <h2>Type</h2>
-     */
-    @Override
-    public List<TrainsInMotion.transportTypes> getTypes(){return TrainsInMotion.transportTypes.HOPPER.singleton();}
     /**
      * <h2>Rider offsets</h2>
      */
@@ -184,11 +150,6 @@ public class EntityBNSFHopper extends Freight {
     @Override
     public float[] getHitboxSize() {
         return new float[]{6.0625f,1.4375f, 1.0f};
-    }
-
-    @Override
-    public float getPistonOffset() {
-        return 0;
     }
 
 

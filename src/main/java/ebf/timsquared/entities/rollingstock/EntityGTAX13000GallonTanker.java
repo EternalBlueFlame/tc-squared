@@ -2,12 +2,7 @@ package ebf.timsquared.entities.rollingstock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ebf.tim.TrainsInMotion;
-import ebf.tim.api.RollingstockBase;
 import ebf.tim.api.SkinRegistry;
-import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.ItemTransport;
-import ebf.tim.utility.FuelHandler;
 import ebf.timsquared.TiMSquared;
 import ebf.timsquared.entities.trains.EntityBrigadelok080;
 import ebf.timsquared.models.bogies.CMDBogie;
@@ -16,10 +11,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import train.client.render.Bogie;
 import train.common.api.LiquidTank;
-
-import java.util.List;
-import java.util.UUID;
+import train.common.items.ItemRollingStock;
 
 import static ebf.tim.utility.CommonUtil.DefineStack;
 
@@ -34,11 +28,8 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
 /*    public static final String[] itemDescription = new String[]{
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 4" + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.sizeof") +": 13.4" + StatCollector.translateToLocal("gui.buckets")};*/
-    public static final Item thisItem = new ItemTransport(new EntityGTAX13000GallonTanker(null), TiMSquared.MODID, TiMSquared.creativeTab);
+    public static final Item thisItem = new ItemRollingStock(new EntityGTAX13000GallonTanker(null), TiMSquared.MODID, TiMSquared.creativeTab);
 
-    public EntityGTAX13000GallonTanker(UUID owner, World world, double xPos, double yPos, double zPos) {
-        super(owner, world, xPos, yPos, zPos);
-    }
     public EntityGTAX13000GallonTanker(World world){
         super(world);
     }
@@ -46,24 +37,15 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
     /*
      * <h1>Variable Overrides</h1>
      */
-
     @Override
-    public float[][] bogieModelOffsets() {
-        return new float[][]{{5.1f,0,0},{-5.1f,0,0}};
-    }
-
-    @Override
-    public ModelBase[] bogieModels() {
-        return new ModelBase[]{new CMDBogie()};
+    public Bogie[] bogies(){
+        return new Bogie[]{
+                new Bogie(new CMDBogie(),5.1f,0,0),
+                new Bogie(new CMDBogie(),-5.1f,0,0)};
     }
 
     @Override
     public float[] rotationPoints(){return new float[]{5,-5};}
-
-    @Override
-    public float getRenderScale() {
-        return  0.0625f;
-    }
 
     @Override
     public float[][] modelOffsets() {
@@ -86,8 +68,6 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
     @Override
     public int getInventoryRows(){return 0;}
     @Override
-    public List<TrainsInMotion.transportTypes> getTypes(){return TrainsInMotion.transportTypes.TANKER.singleton();}
-    @Override
     public float[][] getRiderOffsets(){return null;}
 
     @Override
@@ -96,26 +76,11 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
     }
 
     @Override
-    public float getPistonOffset() {
-        return 0;
-    }
-
-    @Override
     public Item getItem(){
         return thisItem;
     }
     @Override
     public int[] getTankCapacity(){return new int[]{13400};}
-
-    @Override
-    public String[][] getTankFilters() {
-        return null;
-    }
-
-    @Override
-    public void manageFuel(){
-        FuelHandler.manageTanker(this);
-    }
 
     @Override
     public float weightKg() {
@@ -130,15 +95,6 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
                 null, null, null
         };
     }
-
-
-    @Override
-    public void initInventorySlots(){
-        super.initInventorySlots();
-        inventory.add(tankerInputSlot());
-        inventory.add(tankerOutputSlot());
-    }
-
 
     @Override
     public String transportName() {
@@ -183,11 +139,6 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
     @Override
     public String[] additionalItemText() {
         return null;
-    }
-
-    @Override
-    public float getMaxFuel() {
-        return 0;
     }
 
     @Override
