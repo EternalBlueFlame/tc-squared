@@ -53,6 +53,9 @@ public class EntityBrigadelok080Diesel extends DieselTrain {
      * Be sure the one that takes more than a world is always first, unless you wanna compensate for that in the item declaration.
      * @see Locomotive
      */
+    public EntityBrigadelok080Diesel(World world, double x, double y, double z){
+        super(world,x,y,z);
+    }
     public EntityBrigadelok080Diesel(World world){
         super(world);
     }
@@ -148,11 +151,7 @@ public class EntityBrigadelok080Diesel extends DieselTrain {
 
     @Override
     public ItemStack[] getRecipe() {
-        return new ItemStack[]{
-                null, null, null,
-                null, null, null,
-                null, null, null
-        };
+        return null;
     }
 
     @Override

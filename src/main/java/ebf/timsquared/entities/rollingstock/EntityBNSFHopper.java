@@ -32,7 +32,9 @@ public class EntityBNSFHopper extends Freight {
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 2" + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.sizeof") +": 27" + StatCollector.translateToLocal("menu.item.slots")};*/
     public static final Item thisItem = new ItemRollingStock(new EntityBNSFHopper(null), TiMSquared.MODID, TiMSquared.creativeTab);
-
+    public EntityBNSFHopper(World world, double d, double d1, double d2) {
+        super(world, d, d1, d2);
+    }
     public EntityBNSFHopper(World world){
         super(world);
     }
@@ -84,11 +86,7 @@ public class EntityBNSFHopper extends Freight {
 
     @Override
     public ItemStack[] getRecipe() {
-        return new ItemStack[]{
-                null, null, null,
-                null, null, null,
-                null, null, null
-        };
+        return null;
     }
 
     @Override

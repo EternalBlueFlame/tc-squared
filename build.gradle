@@ -71,6 +71,16 @@ task buildClonedRepo(type: Exec) {
     }
 }
 
+
+sourceSets {
+    main {
+        resources {
+            // Include the cloned assets folder as a resource directory
+            srcDir "${cloneDir}/src/main/resources"
+        }
+    }
+}
+
 repositories {
     maven {
         name "ChickenBones"

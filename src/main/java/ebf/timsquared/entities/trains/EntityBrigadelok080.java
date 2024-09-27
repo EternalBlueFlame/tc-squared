@@ -57,6 +57,9 @@ public class EntityBrigadelok080 extends SteamTrain {
      * Be sure the one that takes more than a world is always first, unless you wanna compensate for that in the item declaration.
      * @see Locomotive
      */
+    public EntityBrigadelok080(World world, double x, double y, double z){
+        super(world,x,y,z);
+    }
     public EntityBrigadelok080(World world){
         super(world);
     }
@@ -151,11 +154,7 @@ public class EntityBrigadelok080 extends SteamTrain {
 
     @Override
     public ItemStack[] getRecipe() {
-        return new ItemStack[]{
-                null, null, null,
-                null, null, null,
-                null, null, null
-        };
+        return null;
     }
 
 
@@ -181,6 +180,18 @@ public class EntityBrigadelok080 extends SteamTrain {
     public float[][] modelOffsets() {
         return null;
     }
+
+    /**defines the rate of fuel use*/
+    @Override
+    public int setFuelConsumption() {return 100;}
+
+    /**defines the acceleration efficiency*/
+    @Override
+    public double setAccel() {return 0.3;}
+
+    /**defines the brake efficiency*/
+    @Override
+    public double setBrake() {return 0.95;}
 
     /**
      * <h2>rider sit or stand</h2>

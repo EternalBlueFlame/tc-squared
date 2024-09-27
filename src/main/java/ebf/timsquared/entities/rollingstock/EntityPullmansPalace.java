@@ -28,7 +28,9 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 2 " + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.seats") +": 4 " + StatCollector.translateToLocal("menu.item.players")};*/
     public static final Item thisItem = new ItemRollingStock(new EntityPullmansPalace(null), TiMSquared.MODID, TiMSquared.creativeTab);
-
+    public EntityPullmansPalace(World world, double d, double d1, double d2) {
+        super(world, d, d1, d2);
+    }
     public EntityPullmansPalace(World world){
         super(world);
     }
@@ -49,7 +51,7 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
 
     @Override
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/pullmanspalace.png", new String[]{},
+        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/pullmanspalace", new String[]{},
                 "Pullman's Palace", "A fictional passenger car from \"Railroads!\", based off the Federal #98 Pullman Private Car");
     }
 
@@ -73,7 +75,7 @@ public class EntityPullmansPalace extends EntityRollingStock implements IPasseng
         return new ItemStack[]{
                 DefineStack(Items.bed, 1), null, null,
                 null, null, null,
-                null, null, null
+                null, null, null, null
         };
     }
 

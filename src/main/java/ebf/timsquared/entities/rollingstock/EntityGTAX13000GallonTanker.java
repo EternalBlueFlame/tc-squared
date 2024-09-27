@@ -29,7 +29,9 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
             "\u00A77" + StatCollector.translateToLocal("menu.item.weight") +": 4" + StatCollector.translateToLocal("menu.item.tons"),
             "\u00A77" + StatCollector.translateToLocal("menu.item.sizeof") +": 13.4" + StatCollector.translateToLocal("gui.buckets")};*/
     public static final Item thisItem = new ItemRollingStock(new EntityGTAX13000GallonTanker(null), TiMSquared.MODID, TiMSquared.creativeTab);
-
+    public EntityGTAX13000GallonTanker(World world, double d, double d1, double d2) {
+        super(world, d, d1, d2);
+    }
     public EntityGTAX13000GallonTanker(World world){
         super(world);
     }
@@ -54,8 +56,8 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
 
     @Override
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/GATX13000GallonTanker.png",
-                "textures/hd/rollingstock/cmd_bogie.png",
+        SkinRegistry.addSkin(this.getClass(), TiMSquared.MODID, "textures/stock/GATX13000GallonTanker",
+                "textures/hd/rollingstock/cmd_bogie",
                 "GATX 13000 Gallon Tanker",
                 "One of their smaller tanker cars, usually used for commodities such as molten sulfur, clay slurry, caustic soda and corn syrup.");
     }
@@ -92,7 +94,7 @@ public class EntityGTAX13000GallonTanker extends LiquidTank {
         return new ItemStack[]{
                 DefineStack(Items.bucket, 1), null, null,
                 null, null, null,
-                null, null, null
+                null, null, null, null
         };
     }
 
