@@ -116,7 +116,7 @@ public class EntityBrigadelok080Diesel extends DieselTrain {
      * @return the size of the inventory not counting any fuel or crafting slots, those are defined by the type.
      */
     @Override
-    public int getInventoryRows(){return 1;}
+    public int getInventoryRows(){return 0;}
 
     /**
      * <h2>Rider offset</h2>
